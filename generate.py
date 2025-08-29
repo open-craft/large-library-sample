@@ -1,12 +1,10 @@
-import random
 import logging
+import random
 
 from django.contrib.auth import get_user_model
-
 from opaque_keys.edx.locator import LibraryContainerLocator, LibraryUsageLocatorV2
-from organizations.models import Organization
 from openedx.core.djangoapps.content_libraries import api as lib_api
-
+from organizations.models import Organization
 
 # Configuring logger while running in the shell to make it less verbose
 logger = logging.getLogger("large-library-sample")
@@ -14,6 +12,8 @@ logger.propagate = False
 logger_handler = logging.StreamHandler()
 logger.addHandler(logger_handler)
 logger_handler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s - %(message)s'))
+
+random.seed(43)
 
 User = get_user_model()
 
@@ -38,7 +38,7 @@ def create_containers(container_type: lib_api.ContainerType, count: int):
     logger.info(f"Creating {count} {container_type.value}s...")
     keys = []
     children = {}
-    for i in range(1, count+1):
+    for i in range(1, count + 1):
         container = lib_api.create_container(
             library_key=library_key,
             container_type=container_type,
@@ -55,7 +55,7 @@ def create_containers(container_type: lib_api.ContainerType, count: int):
 def create_components():
     logger.info(f"Creating {COMPONENT_COUNT} components...")
     keys = []
-    for i in range(1, COMPONENT_COUNT+1):
+    for i in range(1, COMPONENT_COUNT + 1):
         block_type = random.sample(COMPONENT_TYPES, 1)[0]
         component = lib_api.create_library_block(
             library_key=library_key,
@@ -67,6 +67,7 @@ def create_components():
     logger.info(f"Created {COMPONENT_COUNT} components")
     return keys
 
+
 def link_in_containers(
     container_keys: list[LibraryContainerLocator],
     children_keys: list[LibraryUsageLocatorV2] | list[LibraryContainerLocator],
@@ -76,7 +77,7 @@ def link_in_containers(
 ):
     num_containers = int(count * link_rate)
     for child_key in children_keys:
-        random_containers = random.sample(container_keys, num_containers)
+        random_containers = random.choices(container_keys, k=num_containers)
         for container_key in random_containers:
             result_dict[container_key].append(child_key)
     for container_key, container_children_keys in result_dict.items():
