@@ -17,7 +17,7 @@ random.seed(43)
 
 User = get_user_model()
 
-USER_EMAIL = "edx@example.com"
+USER_EMAIL = "christofer@opencraft.com"
 
 user = User.objects.get(email=USER_EMAIL)
 
