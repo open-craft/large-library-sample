@@ -22,8 +22,8 @@ USER_EMAIL = "edx@example.com"
 user = User.objects.get(email=USER_EMAIL)
 
 SAMPLE_ORG_NAME = "SampleLibraryOrg"
-LIBRARY_NAME = "Sample Large library 10"
-LIBRARY_SLUG = "sample_large_library_10"
+LIBRARY_NAME = "Sample Large library 1"
+LIBRARY_SLUG = "sample_large_library_1"
 SECTION_COUNT = 50
 SUBSECTION_COUNT = 30
 SUBSECTION_LINK_RATE = 0.5
